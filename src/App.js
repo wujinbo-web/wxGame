@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.less';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        hello word!
+        <div>共青团杭州市余杭区委员会<span>宣</span></div>
       </div>
     );
   }
