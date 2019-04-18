@@ -7,8 +7,15 @@ const icon3=require('./images/icon3.png');
 const icon4=require('./images/icon4.png');
 const icon5=require('./images/icon5.png');
 const icon6=require('./images/icon6.png');
+const icon7=require('./images/icon7.png');
+const icon8=require('./images/icon8.png');
+const icon9=require('./images/icon9.png');
+const icon10=require('./images/icon10.png');
 const face1=require('./images/face/1.gif');
 const face2=require('./images/face/2.gif');
+const face3=require('./images/face/3.gif');
+const face4=require('./images/face/4.gif');
+const face5=require('./images/face/5.gif');
 const guohui=require('./images/guohui.png');
 const font=require('./images/font1.png');
 const qipao=require('./images/qipao.png');
@@ -16,9 +23,12 @@ const btn1=require('./images/btn/btn1.png');
 const btn2=require('./images/btn/btn2.png');
 const btn3=require('./images/btn/btn3.png');
 const btn4=require('./images/btn/btn4.png');
+const btn5=require('./images/btn/btn5.png');
+const btn6=require('./images/btn/btn6.png');
 const regular=require('./images/regular.png');
 const focksPublic=require('./images/focksPublic.png');
 const qrCode=require('./images/qrCode.png');
+const redBag=require('./images/redbag.png');
 
 class App extends Component {
   constructor(props){
@@ -26,13 +36,28 @@ class App extends Component {
     this.state={
       index_isDisable: false,  //规则遮罩
       focksOnPublicNumber: false, //关注公众号遮罩
-      ensure: false, //回答正确遮罩
-      page_show: 2,  //1首页 2答题页面 3填写手机号
-      questionEnsure: 0, //回答状态  0未回答 1回答正确 2回答错误
+      page_show: 1,  //1首页 2答题页面 3填写手机号
+      questionEnsure: 0, //回答状态  0未回答 1回答正确 2回答错误 3很遗憾未中奖 4.恭喜你
       qsList:[],  //随机生成的问题序号列表
       qsNow: 0, //当前问题序号
       qs_ensure: 0, //已答对题数
+      selectNow: '',//当前选择
+      phone:'',
     }
+  }
+  //重新开始游戏
+  resetGame=()=>{
+    let page_show=1;
+    let questionEnsure=0;
+    let qsNow=0;
+    let qs_ensure=0;
+    let selectNow="";
+    let phone=""
+    this.setState({ page_show,questionEnsure,qsNow,qs_ensure,selectNow,phone});
+  }
+  //填写手机手机号
+  writePhone=()=>{
+    this.setState({page_show:3});
   }
   //初始化之前
   componentWillMount(){
@@ -40,12 +65,13 @@ class App extends Component {
     let qsList=this.getRandomNum(QuestionList.length-1);
     this.setState({qsList});
   }
+  //挂载之后
   componentDidMount(){
     //QuestionList 题库列表
 
   }
   //生成指定范围内不重复的10个数字
-  getRandomNum = (end=14)=>{
+  getRandomNum = (end=14) =>{
     let arr=[];
     while(arr.length<10){
       let num = Math.round(Math.random()*end);
@@ -56,6 +82,7 @@ class App extends Component {
     }
     return arr;
   }
+
   //隐藏规则
   disableMask=()=>{
     let index_isDisable=false;
@@ -87,10 +114,17 @@ class App extends Component {
   //获取问题
   getQuestion=(type)=>{
     let { qsList, qsNow } = this.state;
+    let nowData = QuestionList[qsList[qsNow]];
     if(type==="title"){
-      return QuestionList[qsList[qsNow]].question;
+      return nowData.question;
     }else if(type==="answer"){
-      return QuestionList[qsList[qsNow]].list;
+      return nowData.list;
+    }else if(type==="index"){
+      //返回答案序号
+      return nowData.answer;
+    }else if(type==="ensure"){
+      //返回正确答案 信息
+      return nowData.list[nowData.answer];
     }
   }
   //下标转字母
@@ -108,8 +142,76 @@ class App extends Component {
     }
   }
 
+  //选择答案
+  selectItem = (index) =>{
+    this.setState({selectNow:index});
+  }
+
+  //提交答案
+  submitAnswer=()=>{
+    //选择的答案
+    let { selectNow } = this.state;
+    let ensure = this.getQuestion("index");
+    if(selectNow===""){
+      alert("请选择答案");
+      return;
+    }
+    //判断答案是否正确
+    if(ensure==selectNow){
+      //正确
+      let { qs_ensure } = this.state;
+      this.setState({questionEnsure: 1, qs_ensure:qs_ensure+1});
+    }else{
+      //错误
+      this.setState({questionEnsure: 2});
+    }
+
+  }
+
+  //下一题
+  nextQuestion = () => {
+    //1题目qsNow+1，2当前选择为空selectNow，3.回答状态questionEnsure=0
+    let { qsNow, selectNow, questionEnsure, qs_ensure } = this.state;
+    if (qsNow<9) {
+      this.setState({qsNow:qsNow+1,selectNow:"",questionEnsure:0});
+    }else{
+       //判断正确的答题数
+       if(qs_ensure>=9){
+         //中奖
+         this.setState({questionEnsure:4});
+       }else{
+         //没中奖
+         this.setState({questionEnsure:3});
+       }
+    }
+  }
+
+  //修改手机号
+  changePhone(e){
+    let phone=e.target.value;
+    this.setState({phone});
+  }
+
+  //提交手机号
+  submitPhone = ()=>{
+    let { phone } = this.state;
+    console.log(phone);
+    //判断手机
+    if(!(/^1[34578]\d{9}$/.test(phone))){
+      alert("手机号填写有误，请重新填写");
+      return false
+    }
+
+    //请求数据 存入手机号
+    alert("提交成功,审核通过后花费将在3个工作日内充值到账");
+
+    //重置游戏
+    this.resetGame();
+  }
+
+
   render() {
-    let { index_isDisable, page_show,focksOnPublicNumber, questionEnsure, qsNow } = this.state;
+    let { index_isDisable, page_show,focksOnPublicNumber, questionEnsure, qsNow, selectNow, qs_ensure } = this.state;
     return (
       <div className="App">
         {
@@ -150,41 +252,117 @@ class App extends Component {
             </div>
           </div>:""
         }
-        <div className="question">
-
-          {
-            questionEnsure===1?<div className="ensure_fail">
-              <div className="content">
-                <p className="title">恭喜你！回答正确<br/>正确答案为:</p>
-                <p className="answer">B.xxxxx</p>
-                <img src={btn4} className="btn" alt="下一题" />
-              </div>
-            </div>:""
-          }
-
-          <img src={icon6} className="icon1" alt="垃圾桶"/>
-          <div className="qipao">
-            <p className="num">{qsNow+1}</p>
-            <p>question</p>
-          </div>
-          <div className="content">
-            <div className="title">
-              {
-                this.getQuestion('title')
-              }
-            </div>
+        {
+          page_show===2?<div className="question">
             {
-              this.getQuestion('answer').map((item,index)=>{
-                return <p className="answer" key={index}>{this.transfromEnglish(index)+'.'+item}</p>
-              })
+                //回答正确界面
+              questionEnsure===1?<div className="ensure_fail">
+                <div className="content">
+                  <img src={face3} className="face"/>
+                  <p className="title">恭喜你！回答正确<br/>正确答案为:</p>
+                  <p className="answer">
+                    {this.transfromEnglish(this.getQuestion("index"))+'.'+this.getQuestion('ensure')}
+                  </p>
+                  <img src={btn4} className="btn" alt="下一题" onClick={this.nextQuestion} />
+                  <img src={guohui} className="guohui" alt="国徽" />
+                </div>
+              </div>:""
             }
+            {
+              //回答错误界面
+              questionEnsure===2?<div className="ensure_fail">
+                <div className="content">
+                  <img src={face4} className="face"/>
+                  <p className="title">很遗憾！回答错误<br/>正确答案为:</p>
+                  <p className="answer">
+                    {this.transfromEnglish(this.getQuestion("index"))+'.'+this.getQuestion('ensure')}
+                  </p>
+                  <img src={btn4} className="btn" alt="下一题" onClick={this.nextQuestion} />
+                  <img src={guohui} className="guohui" alt="国徽" />
+                </div>
+              </div>:""
+            }
+            {
+              //未中中奖
+              questionEnsure===3?<div className="mask" onClick={this.resetGame.bind(this)}>
+                <div className="content">
+                  <img src={face5} className="face" alt="嫌弃表情" />
+                  <p className="title">
+                    很抱歉你未中奖<br />
+                    本次正确答题为{qs_ensure}题，请再接再励！
+                  </p>
+                  <img src={guohui} className="guohui" alt="国徽" />
+                </div>
+              </div>:""
+            }
+            {
+              //中奖
+              questionEnsure===4?<div className="mask">
+                <div className="content2">
+                  <img src={guohui} className="guoqi" />
+                  <p className="title">
+                    恭喜你！成功抽中了<br/>
+                    <span>10元</span>手机话费！
+                  </p>
+                  <p className="title2">
+                    感谢您对”垃圾分类知识有奖问答”的<br/>
+                    支持！谢谢参与
+                  </p>
+                </div>
+                <img src={redBag} className="redbag" alt="红包" />
+                <img src={btn5} className="btn" alt="填写手机按钮"/>
+              </div>:""
+            }
+            <img src={icon6} className="icon1" alt="垃圾桶"/>
+            <img src={icon7} className="icon2" alt="垃圾桶"/>
+            <img src={icon4} className="icon3" alt="报纸"/>
+            <img src={icon2} className="icon4" alt="彩菜叶"/>
+            <div className="qipao">
+              <p className="num">{qsNow+1}</p>
+              <p>question</p>
+            </div>
+            <div className="content">
+              <div className="title">
+                {
+                  this.getQuestion('title')
+                }
+              </div>
+              {
+                this.getQuestion('answer').map((item,index)=>{
+                  return(<p
+                    className={`answer ${selectNow===index?"active":""}`}
+                    key={index}
+                    onClick={this.selectItem.bind(this,index)}
+                  >
+                    {this.transfromEnglish(index)+'.'+item}
+                  </p>)
 
-            <img src={guohui} className="guohui" alt="国徽"/>
-          </div>
-          <img src={btn3} className="btn1" alt="提交答案"/>
-
-        </div>
-
+                })
+              }
+              <img src={guohui} className="guohui" alt="国徽"/>
+            </div>
+            <img src={btn3} className="btn1" alt="提交答案" onClick={this.submitAnswer}/>
+          </div>:""
+        }
+        {
+          page_show===3?<div className="wrap">
+              <img src={icon7} className="icon1" />
+              <img src={icon5} className="icon2" />
+              <img src={icon8} className="icon3" />
+              <img src={icon1} className="icon4" />
+              <img src={icon6} className="icon5" />
+              <img src={icon4} className="icon6" />
+              <img src={icon9} className="icon7" />
+              <img src={icon10} className="icon8" />
+              <img src={icon3} className="icon9" />
+              <img src={icon2} className="icon10" />
+              <div className="content">
+                <p className="title">话费将会在3个工作日内充值到账</p>
+                <input placeholder="请输入充值手机号" onChange={this.changePhone.bind(this)} />
+              </div>
+              <img src={btn6} className="btn" onClick={this.submitPhone}/>
+          </div>:""
+        }
       </div>
     );
   }

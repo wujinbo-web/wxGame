@@ -183,6 +183,19 @@
         top: 231/@width;
         left: 51/@width;
         z-index: 9;
+        .guohui{
+          width: 120/@width;
+          height: 120/@width;
+          position: absolute;
+          right: -30/@width;
+          bottom: -20/@width;
+        }
+        .face{
+          width: 360/@width;
+          position: absolute;
+          top: -250/@width;
+          left: 144/@width;
+        }
         .title{
           font-size: 48/@width;
           line-height: 92/@width;
@@ -194,9 +207,9 @@
           background-size: 100% 100%;
           text-align: center;
           margin: 20/@width auto;
-          line-height: 75/@width;
+          line-height: 35/@width;
           color: #5f3209;
-          font-size: 30/@width;
+          font-size: 20/@width;
         }
         .btn{
           width: 269/@width;
@@ -207,12 +220,93 @@
         }
       }
     }
+    //遮罩层  没得奖的
+    .mask{
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.68);
+      position: absolute;
+      z-index: 999;
+      .btn{
+        width: 379/@width;
+        height: 97/@width;
+        position: absolute;
+        left: 185/@width;
+        bottom:150/@width;
+        z-index: 10;
+      }
+      .redbag{
+        width:100%;
+        position: absolute;
+        left: 0;
+        bottom: 90/@width;
+        z-index: 9;
+      }
+      .content2{
+        width:650/@width;
+        height: 510/@width;
+        background: #ffd0a5;
+        border: 3px solid #7b3b00;
+        position: absolute;
+        top: 130/@width;
+        left: 50/@width;
+        .guoqi{
+          width: 158/@width;
+          height: 165/@width;
+          position: absolute;
+          left: -30/@width;
+          top: -60/@width;
+        }
+        .title{
+          color: #7b3b00;
+          font-size: 40/@width;
+          line-height: 80/@width;
+          font-weight: 900;
+          margin-top: 60/@width;
+          span{
+            font-size: 60/@width;
+          }
+        }
+        .title2{
+          font-size: 30/@width;
+          font-family: 100;
+          color: #7b3b00;
+        }
+      }
+      .content{
+        width:650/@width;
+        height: 510/@width;
+        background: #ffd0a5;
+        border: 3px solid #7b3b00;
+        top: 350/@width;
+        .guohui{
+          width: 158/@width;
+          height: 167/@width;
+          position: absolute;
+          right: -30/@width;
+          bottom: -40/@width;
+        }
+        .face{
+          width:550/@width;
+          position: absolute;
+          left: 50/@width;
+          top: -350/@width;
+        }
+        .title{
+          text-align: center;
+          color: #7b3b00;
+          line-height: 73/@width;
+          position: absolute;
+          bottom: 90/@width;
+        }
+      }
+    }
     .btn1{
       width: 384/@width;
       height: 96/@width;
       position: absolute;
       left: 183/@width;
-      bottom: 120/@width;
+      bottom: 100/@width;
     }
     .qipao{
       width: 293/@width;
@@ -235,7 +329,7 @@
     }
     .content{
       width: 648/@width;
-      height: 706/@width;
+      height: 740/@width;
       background: url('./images/datikuang.png');
       background-size: 100% 100%;
       position: absolute;
@@ -251,7 +345,7 @@
         z-index: 11;
       }
       .title{
-        padding: 125/@width 80/@width 0;
+        padding: 80/@width 80/@width 0;
         text-align: center;
         color: #5f3209;
         font-size: 30/@width;
@@ -280,7 +374,135 @@
       height: 306/@width;
       position: absolute;
       left: -74/@width;
-      bottom: 160/@width;
+      bottom: 140/@width;
+    }
+    .icon2{
+      width: 112/@width;
+      height: 174/@width;
+      position: absolute;
+      right: 74/@width;
+      top: 85/@width;
+    }
+    .icon3{
+      width: 100/@width;
+      height: 65/@width;
+      position: absolute;
+      left: 74/@width;
+      bottom: 44/@width;
+    }
+    .icon4{
+      width: 180/@width;
+      height: 132/@width;
+      position: absolute;
+      right: 85/@width;
+      bottom: -20/@width;
+    }
+  }
+  .wrap{
+    width: 100%;
+    height: 100%;
+    .btn{
+      width: 226/@width;
+      height: 96/@width;
+      position: absolute;
+      bottom:250/@width;
+      left: 262/@width;
+      z-index: 999;
+    }
+    .icon1{
+      width: 112/@width;
+      height: 174/@width;
+      position: absolute;
+      left: 77/@width;
+      top: 61/@width;
+    }
+    .icon2{
+      width: 107/@width;
+      height: 94/@width;
+      position: absolute;
+      left: 269/@width;
+      top: 103/@width;
+    }
+    .icon3{
+      width: 200/@width;
+      height: 88/@width;
+      position: absolute;
+      right: 33/@width;
+      top: 106/@width;
+    }
+    .icon4{
+      width: 82/@width;
+      height: 92/@width;
+      position: absolute;
+      right: 110/@width;
+      top: 251/@width;
+      z-index: 99;
+    }
+    .icon5{
+      width: 229/@width;
+      height: 235/@width;
+      position: absolute;
+      left: 50/@width;
+      top: 692/@width;
+      z-index: 99;
+    }
+    .icon6{
+      width: 100/@width;
+      height: 65/@width;
+      position: absolute;
+      left: 81/@width;
+      bottom: 147/@width;
+    }
+    .icon7{
+      width: 72/@width;
+      height: 102/@width;
+      position: absolute;
+      left: 422/@width;
+      bottom: 94/@width;
+    }
+    .icon8{
+      width: 67/@width;
+      height: 109/@width;
+      position: absolute;
+      left: 259/@width;
+      bottom: 41/@width;
+    }
+    .icon9{
+      width: 97/@width;
+      height: 157/@width;
+      position: absolute;
+      right: 74/@width;
+      bottom: 95/@width;
+    }
+    .icon10{
+      width: 180/@width;
+      height: 132/@width;
+      position: absolute;
+      right: 35/@width;
+      bottom: 310/@width;
+    }
+    .content{
+      width: 565/@width;
+      height: 516/@width;
+      background: white;
+      position: absolute;
+      top: 296/@width;
+      left: 92/@width;
+      .title{
+        margin-top: 100/@width;
+        font-size: 24/@width;
+        color: black;
+        font-weight: 900;
+      }
+      input{
+        width: 415/@width;
+        height: 74/@width;
+        line-height: 74/@width;
+        padding:  0 20/@width;
+        position: absolute;
+        top: 200/@width;
+        left: 55/@width;
+      }
     }
   }
 }
