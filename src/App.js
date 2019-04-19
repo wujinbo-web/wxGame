@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import QuestionList from './mock/data';
 import './App.less';
+const music=require('./images/video/music.mp3');
 const icon1=require('./images/icon1.png');
 const icon2=require('./images/icon2.png');
 const icon3=require('./images/icon3.png');
@@ -30,6 +31,9 @@ const focksPublic=require('./images/focksPublic.png');
 const qrCode=require('./images/qrCode.png');
 const redBag=require('./images/redbag.png');
 
+const laba1=require('./images/video/laba1.png');
+const laba2=require('./images/video/laba2.png');
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -43,6 +47,7 @@ class App extends Component {
       qs_ensure: 0, //已答对题数
       selectNow: '',//当前选择
       phone:'',
+      play_istrue: 1,  //0 暂停 1开始播放
     }
   }
   //重新开始游戏
@@ -68,7 +73,8 @@ class App extends Component {
   //挂载之后
   componentDidMount(){
     //QuestionList 题库列表
-
+    let { play_istrue } = this.state;
+    let muc = document.getElementById('muc');
   }
   //生成指定范围内不重复的10个数字
   getRandomNum = (end=14) =>{
@@ -209,11 +215,34 @@ class App extends Component {
     this.resetGame();
   }
 
+  musicPlay = ()=>{
+    let { play_istrue } = this.state;
+    let muc = document.getElementById('muc');
+    muc.play();
+    this.setState({ play_istrue: 1 });
+  }
+
+  musicPause = () => {
+    console.log(111);
+    let { play_istrue } = this.state;
+    let muc = document.getElementById('muc');
+    muc.pause();
+    this.setState({ play_istrue: 0 });
+  }
 
   render() {
-    let { index_isDisable, page_show,focksOnPublicNumber, questionEnsure, qsNow, selectNow, qs_ensure } = this.state;
+    let { index_isDisable, page_show,focksOnPublicNumber, questionEnsure, qsNow, selectNow, qs_ensure, play_istrue } = this.state;
     return (
       <div className="App">
+        <audio src={music} className="muc" id="muc" preload="auto" autoPlay loop="loop"></audio>
+        {
+          play_istrue==0?<img
+          src={laba2}
+          className="play"
+          onClick={this.musicPlay.bind(this)}
+          />:<img src={laba1} className="play musss" onClick={this.musicPause.bind(this)}/>
+        }
+
         {
           //判断是否在首页
           page_show===1?
